@@ -13,6 +13,7 @@ fn main() {
         process::exit(1);
     }
 
+    let verbose = args.contains(&String::from("-v")) || args.contains(&String::from("--verbose"));
     
     let pattern = &args[2];
     let regex = match Regex::new(pattern) {
@@ -23,7 +24,7 @@ fn main() {
         }
     };
 
-    match file_search::find(&args[1], &regex) {
+    match file_search::find(&args[1], &regex, verbose) {
         Ok(matches) => {
             if matches.is_empty() {
                 println!("未找到匹配项。");
