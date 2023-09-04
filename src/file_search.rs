@@ -1,6 +1,7 @@
 use regex::Regex;
 use std::fs;
 use std::path::Path;
+use colored::*;
 
 pub fn find<P: AsRef<Path>>(
     root: P, 
@@ -30,7 +31,7 @@ fn walk_tree(
                 }
             }
             if verbose {
-                println!("正在搜索: {}", path.display());
+                println!("{}: {}","正在搜索".blue(), path.display().to_string().yellow());
             }
         }
     }
