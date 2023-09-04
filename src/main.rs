@@ -5,8 +5,17 @@ use colored::*;
 
 mod file_search;
 
+use tracing::{debug, error, info};
+use tracing_subscriber::FmtSubscriber;
+
 fn main() {
+    let subscriber = FmtSubscriber::builder().finish();
+    tracing::subscriber::set_global_default(subscriber).expect("设置全局日志订阅器失败");
+
     let args: Vec<String> = env::args().collect(); 
+
+    debug!("程序开始");
+    error!("这是一个错误日志示例");
 
     // 参数1：搜索目录； 参数2：要搜索的正则表达式。
     if args.len() < 3 {
@@ -27,6 +36,8 @@ fn main() {
     let end = if verbose { len - 1 } else { len };
 
     let mut sorted_matches: Vec<String> = Vec::new();
+
+    info!("{}", "开始搜索".green());
 
     for i in dir_begin..reg_begin {
         let mut unsorted_matches: Vec<String> = Vec::new();
@@ -66,7 +77,7 @@ fn main() {
             sorted_matches.push(file.to_string());
         }
     }
-
+    info!("{}", "搜索完成".green());
     if sorted_matches.is_empty() {
         println!("{}", "未找到匹配项。".red());
     } else {
